@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hoje tem?</title>
+<style>
+  /* ============================================
+     🎨 PERSONALIZE AQUI — CORES E WALLPAPER
+     ============================================ */
+    :root {
+    --roxo-escuro: #050b14;   /* fundo escuro / sombra */
+    --roxo: #0d2c4a;          /* fundo principal */
+    --roxo-claro: #1a3e60;    /* detalhes, partículas, borda do "não" */
+    --branco: #eaf2fb;        /* texto claro */
+    --dourado: #6fb3ec;       /* destaque, borda do card, botão "sim" */
+
+    /* Coloque uma URL de imagem aqui para usar wallpaper.
+       Pode ser um link direto (https://...jpg/png) ou deixe 'none' para usar só as cores acima. */
+    --wallpaper: url('https://i.pinimg.com/736x/ce/3b/01/ce3b012f5c959a64c064ee472a3de42c.jpg');
+    /* Exemplo: --wallpaper: url('https://exemplo.com/imagem.jpg'); */
+  }
+  /* ============================================ */
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--roxo-escuro) radial-gradient(circle at top, var(--roxo) 0%, var(--roxo-escuro) 70%);
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* camada separada do wallpaper — fica atrás de tudo e não interfere nas cores do texto */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--wallpaper);
+    background-size: cover;
+    background-position: center;
+    filter: saturate(1.1) brightness(0.95);
+    z-index: 0;
+  }
+
+  /* filtro leve azulado pra reforçar a estética, sem escurecer demais */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 20, 38, 0.25);
+    z-index: 1;
+  }
+
+  /* curse-energy floating particles, like Geto's domain */
+  .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--roxo-claro);
+    border-radius: 50%;
+    opacity: 0.6;
+    filter: blur(1px);
+    animation: float 6s infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+    50% { transform: translateY(-40px) scale(1.4); opacity: 0.9; }
+  }
+
+  .card {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: rgba(10, 18, 46, 0.75);
+    border: 1px solid var(--dourado);
+    border-radius: 24px;
+    padding: 50px 40px;
+    box-shadow: 0 0 40px rgba(6, 35, 164, 0.4);
+    max-width: 90vw;
+  }
+
+  h1 {
+    color: var(--branco);
+    font-size: 2.2em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px var(--roxo-claro);
+  }
+
+  .nome {
+    color: var(--dourado);
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+  }
+
+  .pergunta {
+    color: var(--branco);
+    font-size: 1.6em;
+    margin-bottom: 40px;
+  }
+
+  .botoes {
+    position: relative;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    min-height: 80px;
+    align-items: center;
+  }
+
+  button {
+    font-family: 'Georgia', serif;
+    font-size: 1.2em;
+    padding: 14px 38px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  #sim {
+    background: linear-gradient(135deg, var(--dourado), #6fb3ec);
+    color: var(--roxo-escuro);
+    font-weight: bold;
+  }
+
+  #sim:hover {
+    transform: scale(1.08);
+  }
+
+  #nao {
+    background: var(--roxo-claro);
+    border: none;
+    color: var(--branco);
+    position: relative;
+  }
+
+  .legenda {
+    margin-top: 24px;
+    color: rgba(245, 240, 255, 0.5);
+    font-size: 0.85em;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>hoje tem? 😈😈😈😈</h1>
+
+  <div class="botoes" id="area">
+    <button id="sim" onclick="window.location.href='https://www.youtube.com/shorts/gJVHtG0jFPg'">sim</button>
+    <button id="nao">não</button>
+  </div>
+</div>
+
+<script>
+  // partículas flutuantes tipo energia amaldiçoada
+  const body = document.body;
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = Math.random() * 100 + 'vh';
+    p.style.animationDelay = (Math.random() * 6) + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    body.appendChild(p);
+  }
+
+  const naoBtn = document.getElementById('nao');
+
+  // garante tamanho fixo do botão antes de mover, pra não bugar a posição
+  const larguraBtn = naoBtn.offsetWidth;
+  const alturaBtn = naoBtn.offsetHeight;
+  naoBtn.style.width = larguraBtn + 'px';
+  naoBtn.style.height = alturaBtn + 'px';
+  naoBtn.style.margin = '0';
+
+  const margem = 16;
+
+  function fugir() {
+    // limites reais da tela, recalculados a cada chamada (cobre resize/rotação)
+    const limiteX = window.innerWidth - larguraBtn - margem;
+    const limiteY = window.innerHeight - alturaBtn - margem;
+
+    let novoX = margem + Math.random() * (limiteX - margem);
+    let novoY = margem + Math.random() * (limiteY - margem);
+
+    // trava (clamp) pra nunca passar do limite nem ficar antes da margem
+    novoX = Math.min(Math.max(novoX, margem), limiteX);
+    novoY = Math.min(Math.max(novoY, margem), limiteY);
+
+    naoBtn.style.position = 'fixed';
+    naoBtn.style.left = novoX + 'px';
+    naoBtn.style.top = novoY + 'px';
+    naoBtn.style.zIndex = '10';
+  }
+
+  // um único evento cobre clique do mouse e toque no celular (sem duplicar)
+  naoBtn.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    fugir();
+  });
+</script>
+
+</body>
+</html>
